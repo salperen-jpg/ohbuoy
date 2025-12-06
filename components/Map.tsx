@@ -5,6 +5,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { renderToString } from "react-dom/server";
 import { LifeBuoy } from "lucide-react";
+import { useState, useEffect } from "react";
+import { fetchAltitudes } from "@/app/actions/altitude";
 
 // Create custom icon using Lucide's LifeBuoy icon
 const buoyIconHtml = renderToString(
@@ -136,6 +138,30 @@ const getTagStyle = (tag: string) => {
 };
 
 export default function Map() {
+  const [markersWithElevation, setMarkersWithElevation] =
+    useState(balticMarkers);
+
+  useEffect(() => {
+    async function loadElevations() {
+      const locations = balticMarkers.map((m) => ({
+        latitude: m.position[0],
+        longitude: m.position[1],
+      }));
+
+      const elevations = await fetchAltitudes(locations);
+
+      if (elevations) {
+        const updatedMarkers = balticMarkers.map((marker, index) => ({
+          ...marker,
+          altitude: elevations[index] ?? marker.altitude,
+        }));
+        setMarkersWithElevation(updatedMarkers);
+      }
+    }
+
+    loadElevations();
+  }, []);
+
   return (
     <MapContainer
       center={[54.65, 17.5]}
@@ -147,7 +173,7 @@ export default function Map() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
-      {balticMarkers.map((marker) => (
+      {markersWithElevation.map((marker) => (
         <Marker
           key={marker.id}
           position={marker.position as [number, number]}
@@ -165,7 +191,7 @@ export default function Map() {
                   {marker.tag}
                 </span>
                 <p className='text-sm text-gray-600'>
-                  <strong>Altitude:</strong> {marker.altitude}m{" "}
+                  <strong>Altitude:</strong> {marker.altitude ?? 0}m{" "}
                   {marker.altitude < 0
                     ? "(below sea level)"
                     : "(above sea level)"}
