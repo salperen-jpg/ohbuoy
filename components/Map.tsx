@@ -66,6 +66,12 @@ export default function Map() {
                     ? "(below sea level)"
                     : "(above sea level)"}
                 </p>
+                <p className='text-sm text-gray-600'>
+                  <strong>Latitude:</strong> {marker.position[0].toFixed(4)}°
+                </p>
+                <p className='text-sm text-gray-600'>
+                  <strong>Longitude:</strong> {marker.position[1].toFixed(4)}°
+                </p>
               </div>
             </div>
           </Popup>

@@ -4,15 +4,15 @@ import L from "leaflet";
 
 // Create custom icons using Lucide's LifeBuoy icon with different colors
 const alertIconHtml = renderToString(
-  <LifeBuoy size={32} color="#ef4444" strokeWidth={2} />
+  <LifeBuoy size={32} color='#ef4444' strokeWidth={2} />
 );
 
 const warningIconHtml = renderToString(
-  <LifeBuoy size={32} color="#eab308" strokeWidth={2} />
+  <LifeBuoy size={32} color='#eab308' strokeWidth={2} />
 );
 
 const normalIconHtml = renderToString(
-  <LifeBuoy size={32} color="#22c55e" strokeWidth={2} />
+  <LifeBuoy size={32} color='#22c55e' strokeWidth={2} />
 );
 
 export const alertIcon = L.divIcon({
