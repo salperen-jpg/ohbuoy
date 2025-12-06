@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { useState, useEffect } from "react";
 import { fetchAltitudes } from "@/app/actions/altitude";
 import { balticMarkers } from "@/lib/markers";
-import { icon, alertIcon, getTagStyle } from "@/lib/map-utils";
+import { getIconByTag, getTagStyle } from "@/lib/map-utils";
 
 export default function Map() {
   const [markersWithElevation, setMarkersWithElevation] =
@@ -47,7 +47,7 @@ export default function Map() {
         <Marker
           key={marker.id}
           position={marker.position as [number, number]}
-          icon={marker.tag === "Alert" ? alertIcon : icon}
+          icon={getIconByTag(marker.tag)}
         >
           <Popup>
             <div className='min-w-[200px]'>
