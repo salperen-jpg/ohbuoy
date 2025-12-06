@@ -3,17 +3,20 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { renderToString } from "react-dom/server";
+import { LifeBuoy } from "lucide-react";
 
-// Fix for default marker icons in Next.js
-const icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+// Create custom icon using Lucide's LifeBuoy icon
+const buoyIconHtml = renderToString(
+  <LifeBuoy size={32} color='#ef4444' strokeWidth={2} />
+);
+
+const icon = L.divIcon({
+  html: buoyIconHtml,
+  className: "custom-buoy-icon",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16],
 });
 
 // Sample coordinates in the Baltic Sea
